@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.dto.EndpointHitDto;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -25,19 +27,17 @@ public class StatsClient extends BaseClient {
         return post("/hit", endpointHitDto);
     }
 
-    /*public ResponseEntity<Object> saveStats(HttpServletRequest request) {
-    Не совсем понимаю, мы если в постмане тестируем, то сами тело запроса пишем на данном этапе.
-    Зачем брать сервлет и вытаскивать реальный айпи. Или я чего то не понял)))
-    мне показалось что такой вариант будет актуален когда основной сервис напишем и запросы на него
-    кидать будем. Или я опять чего то не понял)) СЛОЖНА
+    public ResponseEntity<Object> saveStats(HttpServletRequest request) {
+        //понял. я тут все налажу как основной сервис и т.д понятны станут
+        //сейчас не догоняю, оставлю в более менее общем виде пока
         EndpointHitDto endpointHitDto = EndpointHitDto.builder()
-                .app("ewm-main-service")
+                .app(request.getParameter("app"))
                 .uri(request.getRequestURI())
                 .ip(request.getRemoteAddr())
                 .timestamp(LocalDateTime.now())
                 .build();
         return post("/hit", endpointHitDto);
-    }*/
+    }
 
     public ResponseEntity<Object> getStats(String start, String end, List<String> uris, Boolean unique) {
         Map<String, Object> parameters = Map.of(

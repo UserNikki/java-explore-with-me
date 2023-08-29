@@ -21,7 +21,7 @@ public class StatServiceImpl implements StatService {
     private final StatRepository statRepository;
 
     @Override
-    //@Transactional(rollbackFor = Exception.class)
+    @Transactional
     public EndpointHit saveStats(EndpointHitDto endpointHitDto) {
         log.info("StatServiceImpl: {}", endpointHitDto);
         return statRepository.save(EndpointHitMapper.fromDto(endpointHitDto));
