@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class NewCompilationDto {
-    private List<Long> events;//сюда айдишники событий
+    private List<Long> events;
     private Boolean pinned;
     private String title;
 }
