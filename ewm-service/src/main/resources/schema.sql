@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS events
     participant_limit  INTEGER DEFAULT 0,
     published_date     TIMESTAMP,
     request_moderation BOOLEAN DEFAULT TRUE,
-    status             VARCHAR,
+    state              VARCHAR,
     title              VARCHAR                           NOT NULL,
     views              BIGINT
 );
