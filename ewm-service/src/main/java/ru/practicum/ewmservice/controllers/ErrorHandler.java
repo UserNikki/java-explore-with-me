@@ -26,7 +26,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError validation(final ConstraintViolationException e) {
         return ApiError.builder()
                 .message(e.getMessage())
