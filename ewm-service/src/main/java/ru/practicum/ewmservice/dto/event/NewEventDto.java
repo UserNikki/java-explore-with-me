@@ -7,14 +7,18 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import ru.practicum.ewmservice.model.Location;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class NewEventDto {
+    @NotBlank
     @Length(max = 2000, min = 20)
     private String annotation;
     private Long category;
+    @NotBlank
     @Length(max = 7000, min = 20)
     private String description;
     private String eventDate;
