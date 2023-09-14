@@ -31,7 +31,7 @@ public class ErrorHandler {
         return ApiError.builder()
                 .message(e.getMessage())
                 .reason(String.valueOf(e.getCause()))
-                .status(HttpStatus.CONFLICT.toString())
+                .status(HttpStatus.BAD_REQUEST.toString())
                 .timestamp(LocalDateTime.now())
                 .build();
     }
@@ -48,7 +48,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError validation(final MethodArgumentNotValidException e) {
         return ApiError.builder()
                 .message(e.getMessage())
