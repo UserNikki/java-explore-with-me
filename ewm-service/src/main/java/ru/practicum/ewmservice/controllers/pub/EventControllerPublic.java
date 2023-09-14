@@ -24,13 +24,13 @@ public class EventControllerPublic {
     private final EventService eventService;
 
     @GetMapping
-    public List<EventShortDto> getAllEvents(@RequestParam(defaultValue = "") String text,
+    public List<EventShortDto> getAllEvents(@RequestParam(required = false) String text,
                                             @RequestParam(required = false) List<Long> categories,
-                                            @RequestParam(defaultValue = "false") Boolean paid,
+                                            @RequestParam(required = false) Boolean paid,
                                             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeStart,
                                             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
                                             @RequestParam(defaultValue = "false") Boolean onlyAvailable,
-                                            @RequestParam(defaultValue = "EVENT_DATE") String sort,
+                                            @RequestParam(required = false, defaultValue = "EVENT_DATE") String sort,
                                             @RequestParam(defaultValue = "0") @Min(0) Integer from,
                                             @RequestParam(defaultValue = "10") @Min(1) Integer size,
                                             HttpServletRequest request) {

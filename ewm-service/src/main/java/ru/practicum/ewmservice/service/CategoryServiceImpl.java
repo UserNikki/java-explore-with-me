@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.ewmservice.dto.category.CategoryDto;
 import ru.practicum.ewmservice.dto.category.NewCategoryDto;
 import ru.practicum.ewmservice.exceptions.NotFoundException;
+import ru.practicum.ewmservice.exceptions.ValidationException;
 import ru.practicum.ewmservice.mapper.CategoryMapper;
 import ru.practicum.ewmservice.model.Category;
 import ru.practicum.ewmservice.repository.CategoryRepository;
@@ -27,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto create(NewCategoryDto categoryDto) {
         if (categoryRepository.existsByNameIgnoreCase(categoryDto.getName())) {
-            throw new NotFoundException("Category name: '" + categoryDto.getName() + "' is not unique");
+            throw new ValidationException("Category name: '" + categoryDto.getName() + "' is not unique");
         }
         log.info("CategoryServiceImpl create category dto: {}", categoryDto);
         final Category category = CategoryMapper.toModel(categoryDto);

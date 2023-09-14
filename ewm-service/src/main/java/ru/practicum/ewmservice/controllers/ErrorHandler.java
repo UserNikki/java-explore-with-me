@@ -5,6 +5,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.practicum.ewmservice.exceptions.ValidationException;
 import ru.practicum.ewmservice.model.ApiError;
 
 import javax.validation.ConstraintViolationException;
@@ -53,6 +54,17 @@ public class ErrorHandler {
                 .message(e.getMessage())
                 .reason(String.valueOf(e.getCause()))
                 .status(HttpStatus.BAD_REQUEST.toString())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiError validationException(final ValidationException e) {
+        return ApiError.builder()
+                .message(e.getMessage())
+                .status(HttpStatus.CONFLICT.toString())
+                .reason(String.valueOf(e.getCause()))
                 .timestamp(LocalDateTime.now())
                 .build();
     }

@@ -134,7 +134,6 @@ public class EventServiceImpl implements EventService {
         }
         if (update.getCategory() != null) {
             final Category category = getCategoryById(update.getCategory());
-            log.debug("Category received");
             oldEvent.setCategory(category);
         }
         if (update.getDescription() != null) {
@@ -194,7 +193,7 @@ public class EventServiceImpl implements EventService {
             specification = specification.and((root, query, criteriaBuilder) -> root.get("initiator").get("id").in(users));
         }
         if (states != null && !states.isEmpty()) {
-            specification = specification.and((root, query, criteriaBuilder) -> root.get("eventStatus").as(String.class).in(states));
+            specification = specification.and((root, query, criteriaBuilder) -> root.get("state").as(String.class).in(states));
         }
         if (categories != null && !categories.isEmpty()) {
             specification = specification.and((root, query, criteriaBuilder) -> root.get("category").get("id").in(categories));
@@ -303,7 +302,7 @@ public class EventServiceImpl implements EventService {
         }
 
         specification = specification.and((root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("eventStatus"), EventStateEnum.PUBLISHED));
+                criteriaBuilder.equal(root.get("state"), EventStateEnum.PUBLISHED));
 
         List<Event> resultEvents = eventRepository.findAll(specification, pageable);
         setViewsOfEvents(resultEvents);
