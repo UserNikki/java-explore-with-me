@@ -5,6 +5,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.practicum.ewmservice.exceptions.NotFoundException;
 import ru.practicum.ewmservice.exceptions.ValidationException;
 import ru.practicum.ewmservice.model.ApiError;
 
@@ -64,6 +65,17 @@ public class ErrorHandler {
         return ApiError.builder()
                 .message(e.getMessage())
                 .status(HttpStatus.CONFLICT.toString())
+                .reason(String.valueOf(e.getCause()))
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError notFoundException(final NotFoundException e) {
+        return ApiError.builder()
+                .message(e.getMessage())
+                .status(HttpStatus.NOT_FOUND.toString())
                 .reason(String.valueOf(e.getCause()))
                 .timestamp(LocalDateTime.now())
                 .build();
