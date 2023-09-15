@@ -116,8 +116,12 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public EventFullDto updateEventByUsersIdAndEventIdFromUser(Long userId, Long eventId, UpdateEventUserRequest update) {
         isExistsUser(userId);
-        //final Event oldEvent = getEvenByInitiatorAndEventId(userId, eventId);
-        Event oldEvent = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("JJ"));
+        final Event oldEvent = getEvenByInitiatorAndEventId(userId, eventId);
+        log.info("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" +
+                "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" +
+                "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" +
+                "BBBBOOOOODYYYYYYYYY: {}", update);
+        log.info("OLDEVEEEEEEEEEEEEEEEENT {}", oldEvent);
         if (oldEvent.getState().equals(EventStateEnum.PUBLISHED)) {
             throw new IllegalArgumentException("ONLY PENDING Status can be updated: problem in EventServiceImpl " +
                     "updateEventByUsersIdAndEventIdFromUser");
