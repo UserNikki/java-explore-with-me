@@ -117,10 +117,10 @@ public class EventServiceImpl implements EventService {
     public EventFullDto updateEventByUsersIdAndEventIdFromUser(Long userId, Long eventId, UpdateEventUserRequest update) {
         isExistsUser(userId);
         final Event oldEvent = getEvenByInitiatorAndEventId(userId, eventId);
-        if (oldEvent.getState().equals(EventStateEnum.PUBLISHED) || oldEvent.getState().equals(EventStateEnum.CANCELED)) {
+        /*if (oldEvent.getState().equals(EventStateEnum.PUBLISHED) || oldEvent.getState().equals(EventStateEnum.CANCELED)) {
             throw new IllegalArgumentException("ONLY PENDING Status can be updated: problem in EventServiceImpl " +
                     "updateEventByUsersIdAndEventIdFromUser");
-        }
+        }*/
         if (update.getEventDate() != null) {
             final LocalDateTime newDate = LocalDateTime.parse(update.getEventDate(), TIME_FORMATTER);
             isBeforeTwoHours(newDate);
