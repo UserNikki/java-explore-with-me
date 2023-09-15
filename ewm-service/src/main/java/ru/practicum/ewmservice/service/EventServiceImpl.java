@@ -115,8 +115,9 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public EventFullDto updateEventByUsersIdAndEventIdFromUser(Long userId, Long eventId, UpdateEventUserRequest update) {
-        //isExistsUser(userId);
-        final Event oldEvent = getEvenByInitiatorAndEventId(userId, eventId);
+        isExistsUser(userId);
+        //final Event oldEvent = getEvenByInitiatorAndEventId(userId, eventId);
+        Event oldEvent = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("JJ"));
         if (oldEvent.getState().equals(EventStateEnum.PUBLISHED)) {
             throw new IllegalArgumentException("ONLY PENDING Status can be updated: problem in EventServiceImpl " +
                     "updateEventByUsersIdAndEventIdFromUser");
@@ -138,6 +139,10 @@ public class EventServiceImpl implements EventService {
         }
         if (update.getDescription() != null) {
             oldEvent.setDescription(update.getDescription());
+        }
+        //забыл про пейд
+        if (update.getPaid() != null) {
+            oldEvent.setPaid(update.getPaid());
         }
         if (update.getLocation() != null) {
             oldEvent.setLocation(update.getLocation());
