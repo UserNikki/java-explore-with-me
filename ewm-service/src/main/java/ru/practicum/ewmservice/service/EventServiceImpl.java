@@ -115,20 +115,20 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public EventFullDto updateEventByUsersIdAndEventIdFromUser(Long userId, Long eventId, UpdateEventUserRequest update) {
-        isExistsUser(userId);
+        //isExistsUser(userId);
         final Event oldEvent = getEvenByInitiatorAndEventId(userId, eventId);
-        /*if (oldEvent.getState().equals(EventStateEnum.PUBLISHED) || oldEvent.getState().equals(EventStateEnum.CANCELED)) {
+        if (oldEvent.getState().equals(EventStateEnum.PUBLISHED)) {
             throw new IllegalArgumentException("ONLY PENDING Status can be updated: problem in EventServiceImpl " +
                     "updateEventByUsersIdAndEventIdFromUser");
-        }*/
+        }
         if (update.getEventDate() != null) {
             final LocalDateTime newDate = LocalDateTime.parse(update.getEventDate(), TIME_FORMATTER);
             isBeforeTwoHours(newDate);
             oldEvent.setEventDate(newDate);
         }
-        /*if (!oldEvent.getInitiator().getId().equals(userId)) {
+        if (!oldEvent.getInitiator().getId().equals(userId)) {
             throw new IllegalArgumentException("Only owner can update event");
-        }*/
+        }
         if (update.getAnnotation() != null && !update.getAnnotation().isBlank()) {
             oldEvent.setAnnotation(update.getAnnotation());
         }
