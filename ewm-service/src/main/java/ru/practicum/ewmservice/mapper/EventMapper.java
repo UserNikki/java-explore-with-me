@@ -22,7 +22,7 @@ public class EventMapper {
                 .annotation(newEventDto.getAnnotation())
                 .confirmedRequests(null)
                 .description(newEventDto.getDescription())
-                .eventDate(LocalDateTime.parse(newEventDto.getEventDate(), TIME_FORMATTER))
+                .eventDate(newEventDto.getEventDate())
                 .location(newEventDto.getLocation())
                 .paid(newEventDto.getPaid())
                 .participantLimit(newEventDto.getParticipantLimit())

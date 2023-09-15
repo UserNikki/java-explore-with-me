@@ -91,7 +91,7 @@ public class EventServiceImpl implements EventService {
     public EventFullDto create(Long userId, NewEventDto eventDto) {
         final User user = userRepository.findById(userId).orElseThrow(
                 () -> new NotFoundException("User with id = '" + userId + "' not found!"));
-        isBeforeTwoHours(LocalDateTime.parse(eventDto.getEventDate(), TIME_FORMATTER));
+        isBeforeTwoHours(eventDto.getEventDate());
         final Category category = getCategoryById(eventDto.getCategory());
         final Event event = EventMapper.toModel(eventDto);
         log.info("EventServiceImpl createNewEvent userId: {} eventDto: {}", userId, eventDto);
