@@ -1,5 +1,6 @@
 package ru.practicum.ewmservice.dto.event;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import ru.practicum.ewmservice.enums.StateActionEnum;
 import ru.practicum.ewmservice.model.Location;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +21,8 @@ public class UpdateEventUserRequest {
     private Long category;
     @Length(min = 20, max = 7000)
     private String description;
-    private String eventDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime eventDate;
     private Location location;
     private Boolean paid;
     private Integer participantLimit;
