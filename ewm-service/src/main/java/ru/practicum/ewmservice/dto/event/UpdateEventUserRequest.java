@@ -1,10 +1,7 @@
 package ru.practicum.ewmservice.dto.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import ru.practicum.ewmservice.enums.StateActionEnum;
 import ru.practicum.ewmservice.model.Location;
@@ -12,9 +9,10 @@ import ru.practicum.ewmservice.model.Location;
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+//@AllArgsConstructor
+//@NoArgsConstructor
+@RequiredArgsConstructor
+//@Builder
 public class UpdateEventUserRequest {
     @Length(min = 20, max = 2000)
     private String annotation;

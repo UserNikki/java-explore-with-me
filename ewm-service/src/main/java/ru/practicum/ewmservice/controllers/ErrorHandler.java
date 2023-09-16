@@ -11,6 +11,7 @@ import ru.practicum.ewmservice.model.ApiError;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @RestControllerAdvice
 public class ErrorHandler {
@@ -77,6 +78,16 @@ public class ErrorHandler {
                 .message(e.getMessage())
                 .status(HttpStatus.NOT_FOUND.toString())
                 .reason(String.valueOf(e.getCause()))
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler
+    public ApiError notFoundException(final Exception e) {
+        return ApiError.builder()
+                .message(e.getMessage())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.toString())
+                .reason(Arrays.toString(e.getStackTrace()))
                 .timestamp(LocalDateTime.now())
                 .build();
     }
