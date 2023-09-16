@@ -75,9 +75,9 @@ public class CategoryServiceImpl implements CategoryService {
         if (!categoryRepository.existsById(catId)) {
             throw new NotFoundException("Category with id: '" + catId + "' not found");
         }
-        boolean isExist = eventRepository.existsByCategoryId(catId);
+        /*boolean isExist = eventRepository.existsByCategoryId(catId);
         if (isExist)
-            throw new ValidationException("Category has events, impossible to delete");
+            throw new ValidationException("Category has events, impossible to delete");*/
         log.info("CategoryServiceImpl delete id: {}", catId);
         categoryRepository.deleteById(catId);
         log.info("Category id {} deleted  {}", catId, !categoryRepository.existsById(catId));
