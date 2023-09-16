@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewmservice.dto.user.NewUserRequest;
 import ru.practicum.ewmservice.dto.user.UserDto;
 import ru.practicum.ewmservice.exceptions.NotFoundException;
-import ru.practicum.ewmservice.exceptions.ValidationException;
 import ru.practicum.ewmservice.mapper.UserMapper;
 import ru.practicum.ewmservice.model.User;
 import ru.practicum.ewmservice.repository.UserRepository;
