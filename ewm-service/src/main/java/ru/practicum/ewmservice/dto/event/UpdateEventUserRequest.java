@@ -23,8 +23,8 @@ public class UpdateEventUserRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
     private Location location;
-    private Boolean paid;
-    private Integer participantLimit;
+    private Boolean paid = false;
+    private Integer participantLimit = 0;
     private Boolean requestModeration;
     private StateActionEnum stateAction;
     @Length(min = 3, max = 120)
