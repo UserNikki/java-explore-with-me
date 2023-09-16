@@ -14,6 +14,7 @@ import ru.practicum.ewmservice.model.Category;
 import ru.practicum.ewmservice.repository.CategoryRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static ru.practicum.ewmservice.util.PageFactory.createPageable;
@@ -45,11 +46,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto update(Long catId, NewCategoryDto categoryDto) {
-        if (categoryRepository.existsByNameIgnoreCase(categoryDto.getName())) {
-            throw new ValidationException("Category name: '" + categoryDto.getName() + "' is not unique");
-        }
         final Category categoryToUpdate = categoryRepository.findById(catId).orElseThrow(() ->
                 new NotFoundException("Category with id: '" + catId + "' not found"));
+        final Category existingName = categoryRepository.findByNameIgnoreCase(categoryDto.getName());
+        if (!Objects.equals(existingName.getId(), categoryToUpdate.getId()))
+            throw new ValidationException("name already exist");
         log.info("CategoryServiceImpl update id: {} json: {}", catId, categoryDto);
         if (categoryDto.getName() != null) {
             categoryToUpdate.setName(categoryDto.getName());
