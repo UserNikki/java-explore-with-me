@@ -10,6 +10,8 @@ import ru.practicum.ewmservice.dto.user.UserShortDto;
 import ru.practicum.ewmservice.enums.EventStateEnum;
 import ru.practicum.ewmservice.model.Location;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,8 +30,8 @@ public class EventFullDto {
     private Location location;
     private Boolean paid;
     private Integer participantLimit;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private String publishedOn;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime publishedOn;
     private Boolean requestModeration;
     private EventStateEnum state;
     private String title;
