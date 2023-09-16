@@ -45,6 +45,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto update(Long catId, NewCategoryDto categoryDto) {
+        if (categoryRepository.existsByNameIgnoreCase(categoryDto.getName())) {
+            throw new ValidationException("Category name: '" + categoryDto.getName() + "' is not unique");
+        }
         final Category categoryToUpdate = categoryRepository.findById(catId).orElseThrow(() ->
                 new NotFoundException("Category with id: '" + catId + "' not found"));
         log.info("CategoryServiceImpl update id: {} json: {}", catId, categoryDto);
