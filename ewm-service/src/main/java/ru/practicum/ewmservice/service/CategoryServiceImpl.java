@@ -49,6 +49,8 @@ public class CategoryServiceImpl implements CategoryService {
                 new NotFoundException("Category with id: '" + catId + "' not found"));
         log.info("CategoryServiceImpl update id: {} json: {}", catId, categoryDto);
         if (categoryDto.getName() != null) {
+            if (categoryToUpdate.getName().equals(categoryDto.getName()))
+                throw new IllegalStateException("name already exist");
             categoryToUpdate.setName(categoryDto.getName());
         }
         return CategoryMapper.toDto(categoryRepository.save(categoryToUpdate));

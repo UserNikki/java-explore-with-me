@@ -39,7 +39,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError illegalArgException(final IllegalStateException e) {
+    public ApiError illegalStateException(final IllegalStateException e) {
         return ApiError.builder()
                 .message(e.getMessage())
                 .reason(String.valueOf(e.getCause()))
