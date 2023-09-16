@@ -80,14 +80,4 @@ public class ErrorHandler {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
-
-    /*@ExceptionHandler
-    public ApiError notFoundException(final Exception e) {
-        return ApiError.builder()
-                .message(e.getMessage())
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.toString())
-                .reason(Arrays.toString(e.getStackTrace()))
-                .timestamp(LocalDateTime.now())
-                .build();
-    }*/
 }
