@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewmservice.dto.user.NewUserRequest;
 import ru.practicum.ewmservice.dto.user.UserDto;
 import ru.practicum.ewmservice.exceptions.NotFoundException;
+import ru.practicum.ewmservice.exceptions.ValidationException;
 import ru.practicum.ewmservice.mapper.UserMapper;
 import ru.practicum.ewmservice.model.User;
 import ru.practicum.ewmservice.repository.UserRepository;
@@ -27,6 +28,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto create(NewUserRequest newUser) {
+        if (userRepository.existByNameIgnoreCase(newUser.getName()))
+            throw new ValidationException("User name is not unique");
         log.info("UserServiceImpl create user: {}", newUser);
         final User user = UserMapper.toModel(newUser);
         return UserMapper.toDto(userRepository.save(user));
