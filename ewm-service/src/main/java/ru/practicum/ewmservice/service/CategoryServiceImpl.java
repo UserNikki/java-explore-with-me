@@ -49,8 +49,10 @@ public class CategoryServiceImpl implements CategoryService {
         final Category categoryToUpdate = categoryRepository.findById(catId).orElseThrow(() ->
                 new NotFoundException("Category with id: '" + catId + "' not found"));
         final Category existingName = categoryRepository.findByNameIgnoreCase(categoryDto.getName());
-        if (!Objects.equals(existingName.getId(), categoryToUpdate.getId()))
-            throw new ValidationException("name already exist");
+        if (existingName != null) {
+            if (!Objects.equals(existingName.getId(), categoryToUpdate.getId()))
+                throw new ValidationException("name already exist");
+        }
         log.info("CategoryServiceImpl update id: {} json: {}", catId, categoryDto);
         if (categoryDto.getName() != null) {
             categoryToUpdate.setName(categoryDto.getName());
