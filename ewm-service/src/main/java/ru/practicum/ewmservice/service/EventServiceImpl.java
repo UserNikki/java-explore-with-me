@@ -95,10 +95,17 @@ public class EventServiceImpl implements EventService {
         final Category category = getCategoryById(eventDto.getCategory());
         final Event event = EventMapper.toModel(eventDto);
         log.info("EventServiceImpl createNewEvent userId: {} eventDto: {}", userId, eventDto);
+        event.setAnnotation(eventDto.getAnnotation());
         event.setCategory(category);
+        event.setDescription(eventDto.getDescription());
         event.setInitiator(user);
         event.setState(EventStateEnum.PENDING);
         event.setCreatedOn(LocalDateTime.now());
+        event.setEventDate(eventDto.getEventDate());
+        event.setLocation(eventDto.getLocation());
+        event.setTitle(eventDto.getTitle());
+        event.setParticipantLimit(eventDto.getParticipantLimit());
+        event.setPaid(eventDto.getPaid());
         event.setConfirmedRequests(0);
         event.setViews(0);
         return EventMapper.toFullDto(eventRepository.save(event));
