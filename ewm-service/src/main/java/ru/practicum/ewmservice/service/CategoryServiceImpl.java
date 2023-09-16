@@ -12,6 +12,7 @@ import ru.practicum.ewmservice.exceptions.ValidationException;
 import ru.practicum.ewmservice.mapper.CategoryMapper;
 import ru.practicum.ewmservice.model.Category;
 import ru.practicum.ewmservice.repository.CategoryRepository;
+import ru.practicum.ewmservice.repository.EventRepository;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +26,7 @@ import static ru.practicum.ewmservice.util.PageFactory.createPageable;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final EventRepository eventRepository;
 
     @Override
     public CategoryDto create(NewCategoryDto categoryDto) {
@@ -73,6 +75,9 @@ public class CategoryServiceImpl implements CategoryService {
         if (!categoryRepository.existsById(catId)) {
             throw new NotFoundException("Category with id: '" + catId + "' not found");
         }
+        boolean isExist = eventRepository.existsByCategoryId(catId);
+        if (isExist)
+            throw new ValidationException("Category has events, impossible to delete");
         log.info("CategoryServiceImpl delete id: {}", catId);
         categoryRepository.deleteById(catId);
         log.info("Category id {} deleted  {}", catId, !categoryRepository.existsById(catId));
