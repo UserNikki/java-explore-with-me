@@ -28,8 +28,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto create(NewUserRequest newUser) {
-        if (userRepository.existByNameIgnoreCase(newUser.getName()))
-            throw new ValidationException("User name is not unique");
+        /*if (userRepository.existByNameIgnoreCase(newUser.getName()))
+            throw new ValidationException("User name is not unique");*/
         log.info("UserServiceImpl create user: {}", newUser);
         final User user = UserMapper.toModel(newUser);
         return UserMapper.toDto(userRepository.save(user));
