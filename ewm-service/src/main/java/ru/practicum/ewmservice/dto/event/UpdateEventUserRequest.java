@@ -1,7 +1,8 @@
 package ru.practicum.ewmservice.dto.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import ru.practicum.ewmservice.enums.StateActionEnum;
 import ru.practicum.ewmservice.model.Location;
