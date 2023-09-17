@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.dto.EndpointHitDto;
 
@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Component
 public class StatsClient extends BaseClient {
     @Autowired
-    public StatsClient(@Value("${stat-server.url}") String serverUrl, RestTemplateBuilder builder) {
+    public StatsClient(@Value("${stats-server.url}") String serverUrl, RestTemplateBuilder builder) {
         super(builder.uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
                 .requestFactory(HttpComponentsClientHttpRequestFactory::new).build()
         );
@@ -27,9 +27,7 @@ public class StatsClient extends BaseClient {
         return post("/hit", endpointHitDto);
     }
 
-    public ResponseEntity<Object> saveStats(HttpServletRequest request) {
-        //понял. я тут все налажу как основной сервис и т.д понятны станут
-        //сейчас не догоняю, оставлю в более менее общем виде пока
+    public ResponseEntity<Object> saveStat(HttpServletRequest request) {
         EndpointHitDto endpointHitDto = EndpointHitDto.builder()
                 .app(request.getParameter("app"))
                 .uri(request.getRequestURI())
