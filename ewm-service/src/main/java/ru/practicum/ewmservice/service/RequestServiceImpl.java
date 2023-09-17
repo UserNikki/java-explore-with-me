@@ -81,14 +81,14 @@ public class RequestServiceImpl implements RequestService {
 
     private void validationNewRequest(Event event, Long userId, Long eventId) {
         if (event.getInitiator().getId().equals(userId)) {
-            throw new IllegalArgumentException("Owner is not a participant");
+            throw new IllegalStateException("Owner is not a participant");
         }
         if (event.getParticipantLimit() > 0 && event.getParticipantLimit() <= requestRepository
                 .countByEventIdAndStatus(eventId, RequestStatusEnum.CONFIRMED)) {
-            throw new IllegalArgumentException("Limit seat is full");
+            throw new IllegalStateException("Limit seat is full");
         }
         if (!event.getState().equals(EventStateEnum.PUBLISHED)) {
-            throw new IllegalArgumentException("Event not published");
+            throw new IllegalStateException("Event not published");
         }
         if (requestRepository.existsByEventIdAndRequesterId(eventId, userId)) {
             throw new IllegalStateException("Cannot add duplicate request");
