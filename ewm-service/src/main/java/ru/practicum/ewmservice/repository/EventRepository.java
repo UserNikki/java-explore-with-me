@@ -4,7 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.practicum.ewmservice.enums.EventStateEnum;
+import ru.practicum.ewmservice.enums.EventState;
 import ru.practicum.ewmservice.model.Event;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> findAll(Specification<Event> specification, Pageable pageable);
 
-    Optional<Event> findByIdAndState(Long eventId, EventStateEnum state);
+    Optional<Event> findByIdAndState(Long eventId, EventState state);
 
     Boolean existsByCategoryId(Long id);
 }

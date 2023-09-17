@@ -15,8 +15,8 @@ import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.dto.ViewStatsDto;
 import ru.practicum.ewmservice.dto.event.*;
 import ru.practicum.ewmservice.dto.request.ParticipationRequestDto;
-import ru.practicum.ewmservice.enums.EventStateEnum;
-import ru.practicum.ewmservice.enums.StateActionEnum;
+import ru.practicum.ewmservice.enums.EventState;
+import ru.practicum.ewmservice.enums.StateAction;
 import ru.practicum.ewmservice.exceptions.NotFoundException;
 import ru.practicum.ewmservice.mapper.EventMapper;
 import ru.practicum.ewmservice.mapper.RequestMapper;
@@ -37,7 +37,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static ru.practicum.ewmservice.enums.RequestStatusEnum.*;
+import static ru.practicum.ewmservice.enums.RequestStatus.*;
 import static ru.practicum.ewmservice.util.Const.TIME_FORMATTER;
 import static ru.practicum.ewmservice.util.PageFactory.createPageable;
 
@@ -99,7 +99,7 @@ public class EventServiceImpl implements EventService {
         event.setCategory(category);
         event.setDescription(eventDto.getDescription());
         event.setInitiator(user);
-        event.setState(EventStateEnum.PENDING);
+        event.setState(EventState.PENDING);
         event.setCreatedOn(LocalDateTime.now());
         event.setEventDate(eventDto.getEventDate());
         event.setLocation(eventDto.getLocation());
@@ -124,7 +124,7 @@ public class EventServiceImpl implements EventService {
     public EventFullDto updateEventByUsersIdAndEventIdFromUser(Long userId, Long eventId, UpdateEventUserRequest update) {
         isExistsUser(userId);
         final Event oldEvent = getEvenByInitiatorAndEventId(userId, eventId);
-        if (oldEvent.getState().equals(EventStateEnum.PUBLISHED)) {
+        if (oldEvent.getState().equals(EventState.PUBLISHED)) {
             throw new IllegalStateException("ONLY PENDING Status can be updated: problem in EventServiceImpl " +
                     "updateEventByUsersIdAndEventIdFromUser");
         }
@@ -161,10 +161,10 @@ public class EventServiceImpl implements EventService {
         if (update.getStateAction() != null) {
             switch (update.getStateAction()) {
                 case SEND_TO_REVIEW:
-                    oldEvent.setState(EventStateEnum.PENDING);
+                    oldEvent.setState(EventState.PENDING);
                     break;
                 case CANCEL_REVIEW:
-                    oldEvent.setState(EventStateEnum.CANCELED);
+                    oldEvent.setState(EventState.CANCELED);
                     break;
             }
         }
@@ -224,7 +224,7 @@ public class EventServiceImpl implements EventService {
         final Event oldEvent = eventRepository.findById(eventId).orElseThrow(
                 () -> new NotFoundException("Event with id = '" + eventId + "' not found"));
 
-        if (oldEvent.getState().equals(EventStateEnum.PUBLISHED) || oldEvent.getState().equals(EventStateEnum.CANCELED)) {
+        if (oldEvent.getState().equals(EventState.PUBLISHED) || oldEvent.getState().equals(EventState.CANCELED)) {
             throw new IllegalStateException("Cannot update because of status");
         }
         if (update.getAnnotation() != null && !update.getAnnotation().isBlank()) {
@@ -258,10 +258,10 @@ public class EventServiceImpl implements EventService {
             oldEvent.setRequestModeration(update.getRequestModeration());
         }
         if (update.getStateAction() != null) {
-            if (update.getStateAction().equals(StateActionEnum.PUBLISH_EVENT)) {
-                oldEvent.setState(EventStateEnum.PUBLISHED);
-            } else if (update.getStateAction().equals(StateActionEnum.REJECT_EVENT)) {
-                oldEvent.setState(EventStateEnum.CANCELED);
+            if (update.getStateAction().equals(StateAction.PUBLISH_EVENT)) {
+                oldEvent.setState(EventState.PUBLISHED);
+            } else if (update.getStateAction().equals(StateAction.REJECT_EVENT)) {
+                oldEvent.setState(EventState.CANCELED);
             }
         }
         if (update.getTitle() != null && !update.getTitle().isBlank()) {
@@ -312,7 +312,7 @@ public class EventServiceImpl implements EventService {
         }
 
         specification = specification.and((root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("state"), EventStateEnum.PUBLISHED));
+                criteriaBuilder.equal(root.get("state"), EventState.PUBLISHED));
 
         List<Event> resultEvents = eventRepository.findAll(specification, pageable);
         setViewsOfEvents(resultEvents);
@@ -322,7 +322,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto getEventById(Long eventId, HttpServletRequest request) {
-        final Event event = eventRepository.findByIdAndState(eventId, EventStateEnum.PUBLISHED).orElseThrow(
+        final Event event = eventRepository.findByIdAndState(eventId, EventState.PUBLISHED).orElseThrow(
                 () -> new NotFoundException("Event with id: '" + eventId + "' not found"));
         addStatistic(request);
         setViewsOfEvents(List.of(event));

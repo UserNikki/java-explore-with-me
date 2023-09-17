@@ -1,11 +1,8 @@
 package ru.practicum.ewmservice.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import ru.practicum.ewmservice.enums.EventStateEnum;
+import lombok.*;
+import ru.practicum.ewmservice.enums.EventState;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,14 +12,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String annotation;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "category_id")
     private Category category;
     @Column(name = "confirmed_requests")
@@ -34,7 +32,7 @@ public class Event {
     @Column(name = "event_date")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "initiator_id")
     private User initiator;
     @Embedded
@@ -50,7 +48,7 @@ public class Event {
     @Column(name = "request_moderation")
     private Boolean requestModeration;
     @Enumerated(EnumType.STRING)
-    private EventStateEnum state;
+    private EventState state;
     private String title;
     private Integer views;
 }

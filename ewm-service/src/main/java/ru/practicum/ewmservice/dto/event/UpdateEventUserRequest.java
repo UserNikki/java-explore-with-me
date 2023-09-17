@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-import ru.practicum.ewmservice.enums.StateActionEnum;
+import ru.practicum.ewmservice.enums.StateAction;
 import ru.practicum.ewmservice.model.Location;
 
 import java.time.LocalDateTime;
@@ -26,7 +26,7 @@ public class UpdateEventUserRequest {
     private Boolean paid;
     private Integer participantLimit;
     private Boolean requestModeration;
-    private StateActionEnum stateAction;
+    private StateAction stateAction;
     @Length(min = 3, max = 120)
     private String title;
 }

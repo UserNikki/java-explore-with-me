@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewmservice.dto.request.ParticipationRequestDto;
-import ru.practicum.ewmservice.enums.EventStateEnum;
-import ru.practicum.ewmservice.enums.RequestStatusEnum;
+import ru.practicum.ewmservice.enums.EventState;
+import ru.practicum.ewmservice.enums.RequestStatus;
 import ru.practicum.ewmservice.exceptions.NotFoundException;
 import ru.practicum.ewmservice.mapper.RequestMapper;
 import ru.practicum.ewmservice.model.Event;
@@ -42,18 +42,18 @@ public class RequestServiceImpl implements RequestService {
         request.setRequester(user);
         request.setEvent(event);
         if (event.getRequestModeration()) {
-            request.setStatus(RequestStatusEnum.PENDING);
+            request.setStatus(RequestStatus.PENDING);
         } else {
-            request.setStatus(RequestStatusEnum.CONFIRMED);
+            request.setStatus(RequestStatus.CONFIRMED);
         }
-        int countRequestConfirmed = requestRepository.countByEventIdAndStatus(eventId, RequestStatusEnum.CONFIRMED);
+        int countRequestConfirmed = requestRepository.countByEventIdAndStatus(eventId, RequestStatus.CONFIRMED);
 
         if (event.getConfirmedRequests() != countRequestConfirmed) {
             event.setConfirmedRequests(countRequestConfirmed);
             eventRepository.save(event);
         }
         if (event.getParticipantLimit() == 0) {
-            request.setStatus(RequestStatusEnum.CONFIRMED);
+            request.setStatus(RequestStatus.CONFIRMED);
         }
         return RequestMapper.toDto(requestRepository.save(request));
     }
@@ -72,10 +72,10 @@ public class RequestServiceImpl implements RequestService {
         final Request request = requestRepository.findByIdAndRequesterId(requestId, userId).orElseThrow(
                 () -> new NotFoundException(String
                         .format("Request with id: '%d', with same requester id = '%d' not found", requestId, userId)));
-        if (request.getStatus().equals(RequestStatusEnum.CANCELED) || request.getStatus().equals(RequestStatusEnum.REJECTED)) {
+        if (request.getStatus().equals(RequestStatus.CANCELED) || request.getStatus().equals(RequestStatus.REJECTED)) {
             throw new IllegalArgumentException("Request already canceled or rejected");
         }
-        request.setStatus(RequestStatusEnum.CANCELED);
+        request.setStatus(RequestStatus.CANCELED);
         return RequestMapper.toDto(requestRepository.save(request));
     }
 
@@ -84,10 +84,10 @@ public class RequestServiceImpl implements RequestService {
             throw new IllegalStateException("Owner cannot be a participant");
         }
         if (event.getParticipantLimit() > 0 && event.getParticipantLimit() <= requestRepository
-                .countByEventIdAndStatus(eventId, RequestStatusEnum.CONFIRMED)) {
+                .countByEventIdAndStatus(eventId, RequestStatus.CONFIRMED)) {
             throw new IllegalStateException("Participant Limit is full");
         }
-        if (!event.getState().equals(EventStateEnum.PUBLISHED)) {
+        if (!event.getState().equals(EventState.PUBLISHED)) {
             throw new IllegalStateException("Event not published");
         }
         if (requestRepository.existsByEventIdAndRequesterId(eventId, userId)) {

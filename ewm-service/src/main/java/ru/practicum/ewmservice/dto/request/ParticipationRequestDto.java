@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.ewmservice.enums.RequestStatusEnum;
+import ru.practicum.ewmservice.enums.RequestStatus;
 
 @Data
 @AllArgsConstructor
@@ -15,5 +15,5 @@ public class ParticipationRequestDto {
     private String created;
     private Long event;
     private Long requester;
-    private RequestStatusEnum status;
+    private RequestStatus status;
 }

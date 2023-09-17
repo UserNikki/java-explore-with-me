@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-import ru.practicum.ewmservice.enums.StateActionEnum;
+import ru.practicum.ewmservice.enums.StateAction;
 import ru.practicum.ewmservice.model.Location;
 
 @Data
@@ -23,7 +23,7 @@ public class UpdateEventAdminRequest {
     private Boolean paid;
     private Integer participantLimit;
     private Boolean requestModeration;
-    private StateActionEnum stateAction;
+    private StateAction stateAction;
     @Length(min = 3, max = 120)
     private String title;
 }

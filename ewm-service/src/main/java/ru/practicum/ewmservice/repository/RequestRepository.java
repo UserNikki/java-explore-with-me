@@ -1,7 +1,7 @@
 package ru.practicum.ewmservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.practicum.ewmservice.enums.RequestStatusEnum;
+import ru.practicum.ewmservice.enums.RequestStatus;
 import ru.practicum.ewmservice.model.Request;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     Optional<Request> findByEventIdAndId(Long eventId, Long id);
 
-    int countByEventIdAndStatus(Long eventId, RequestStatusEnum status);
+    int countByEventIdAndStatus(Long eventId, RequestStatus status);
 
     Boolean existsByEventIdAndRequesterId(Long eventId, Long userId);
 
