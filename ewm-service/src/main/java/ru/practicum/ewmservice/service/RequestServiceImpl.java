@@ -91,7 +91,7 @@ public class RequestServiceImpl implements RequestService {
             throw new IllegalArgumentException("Event not published");
         }
         if (requestRepository.existsByEventIdAndRequesterId(eventId, userId)) {
-            throw new IllegalArgumentException("Cannot add duplicate request");
+            throw new IllegalStateException("Cannot add duplicate request");
         }
     }
 
