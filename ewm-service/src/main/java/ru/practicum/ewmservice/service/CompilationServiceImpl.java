@@ -17,7 +17,6 @@ import ru.practicum.ewmservice.repository.EventRepository;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,10 +54,9 @@ public class CompilationServiceImpl implements CompilationService {
                 () -> new NotFoundException(String
                         .format("CompilationServiceImpl compilation id: '%d' not found", compId)));
         if (update.getEvents() != null) {
-            compilation.setEvents(update.getEvents().stream()
-                    .flatMap(ids -> eventRepository.findAllById(Collections.singleton(ids))
-                            .stream())
-                    .collect(Collectors.toList()));
+            List<Long> eventIds = update.getEvents();
+            List<Event> events = eventRepository.findAllById(eventIds);
+            compilation.setEvents(events);
         }
         compilation.setPinned(update.getPinned() != null ? update.getPinned() : compilation.getPinned());
         compilation.setTitle(update.getTitle() != null ? update.getTitle() : compilation.getTitle());
@@ -67,10 +65,12 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public void delete(Long compId) {
-        compilationRepository.findById(compId).orElseThrow(
-                () -> new NotFoundException(String
-                        .format("CompilationServiceImpl compilation id: '%d' not found", compId)));
-        compilationRepository.deleteById(compId);
+        if (compilationRepository.existsById(compId)) {
+            compilationRepository.deleteById(compId);
+        } else {
+            throw new NotFoundException(String
+                    .format("CompilationServiceImpl compilation id: '%d' not found", compId));
+        }
     }
 
     @Override
