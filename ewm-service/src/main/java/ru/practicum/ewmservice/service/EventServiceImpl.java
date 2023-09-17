@@ -146,7 +146,6 @@ public class EventServiceImpl implements EventService {
         if (update.getDescription() != null) {
             oldEvent.setDescription(update.getDescription());
         }
-        //забыл про пейд
         if (update.getPaid() != null) {
             oldEvent.setPaid(update.getPaid());
         }
@@ -226,7 +225,7 @@ public class EventServiceImpl implements EventService {
                 () -> new NotFoundException("Event with id = '" + eventId + "' not found"));
 
         if (oldEvent.getState().equals(EventStateEnum.PUBLISHED) || oldEvent.getState().equals(EventStateEnum.CANCELED)) {
-            throw new IllegalArgumentException("Cannot update because of status");
+            throw new IllegalStateException("Cannot update because of status");
         }
         if (update.getAnnotation() != null && !update.getAnnotation().isBlank()) {
             if (update.getAnnotation().length() < 20 || update.getAnnotation().length() > 2000) {
