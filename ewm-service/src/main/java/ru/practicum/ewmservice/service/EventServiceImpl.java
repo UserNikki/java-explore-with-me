@@ -125,7 +125,7 @@ public class EventServiceImpl implements EventService {
         isExistsUser(userId);
         final Event oldEvent = getEvenByInitiatorAndEventId(userId, eventId);
         if (oldEvent.getState().equals(EventStateEnum.PUBLISHED)) {
-            throw new IllegalArgumentException("ONLY PENDING Status can be updated: problem in EventServiceImpl " +
+            throw new IllegalStateException("ONLY PENDING Status can be updated: problem in EventServiceImpl " +
                     "updateEventByUsersIdAndEventIdFromUser");
         }
         if (update.getEventDate() != null) {
