@@ -44,10 +44,9 @@ public class CommentControllerPrivate {
     }
 
     @DeleteMapping("/{commentId}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteComment(@PathVariable(value = "userId") Long userId,
                               @PathVariable(value = "commentId") Long commentId) {
-
         commentService.deleteCommentByOwner(userId, commentId);
     }
 }

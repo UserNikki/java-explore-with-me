@@ -88,10 +88,12 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteCommentByOwner(Long userId, Long commentId) {
         isUserExists(userId);
-        if (commentRepository.existsById(commentId)) {
-            commentRepository.deleteByIdAndAuthorId(commentId, userId);
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NotFoundException(
+                String.format("Comment id: '%d' not found", commentId)));
+        if (comment.getAuthor().getId().equals(userId)) {
+            commentRepository.deleteById(commentId);
         } else {
-            throw new NotFoundException(String.format("Comment id: '%d' not found", commentId));
+            throw new NotFoundException(String.format("Comment id: '%d' only owner can delete", commentId));
         }
     }
 
